@@ -1,81 +1,63 @@
-const results = [
-  {
-    gameId: ObjectId("64eaf20e8f1b2f001c9f5678"),
-    season: "2023-24",
-    date: new Date("2023-12-25T20:00:00Z"),
-    teams: {
-      home: {
-        teamId: ObjectId("64eaf20e8f1b2f001c9f1234"),
-        name: "Los Angeles Lakers",
-        score: 115,
+const results = db.games.find().map(game => {
+  // Obtener detalles del equipo local
+  const homeTeamDetails = db.teams.findOne({ _id: game.homeTeam.teamId });
+  const awayTeamDetails = db.teams.findOne({ _id: game.awayTeam.teamId });
+  
+  // Obtener detalles de los árbitros
+  const refereeDetails = game.officials.map(official => {
+      const referee = db.referees.findOne({ _id: official.refereeId });
+      return {
+          refereeId: official.refereeId,
+          name: `${referee.firstName} ${referee.lastName}`,
+          role: official.role
+      };
+  });
+  
+  // Obtener jugadores destacados del juego 
+  const homeTeamPlayers = db.players.find({"currentTeam.teamId": game.homeTeam.teamId}).toArray();
+  const awayTeamPlayers = db.players.find({"currentTeam.teamId": game.awayTeam.teamId}).toArray();
+  
+  const highlights = [
+      ...homeTeamPlayers.slice(0, 2).map(player => ({
+          playerId: player._id,
+          name: `${player.firstName} ${player.lastName}`,
+          points: Math.floor(Math.random() * 35),
+          assists: Math.floor(Math.random() * 10),
+          rebounds: Math.floor(Math.random() * 12)
+      })),
+      ...awayTeamPlayers.slice(0, 2).map(player => ({
+          playerId: player._id,
+          name: `${player.firstName} ${player.lastName}`,
+          points: Math.floor(Math.random() * 35),
+          assists: Math.floor(Math.random() * 10),
+          rebounds: Math.floor(Math.random() * 12)
+      }))
+  ];
+  
+  return {
+      gameId: game._id,
+      season: game.seasonId ? db.seasons.findOne({ _id: game.seasonId }).year : "2023-24",
+      date: game.date,
+      teams: {
+          home: {
+              teamId: game.homeTeam.teamId,
+              name: homeTeamDetails.name,
+              score: game.homeTeam.score,
+          },
+          away: {
+              teamId: game.awayTeam.teamId,
+              name: awayTeamDetails.name,
+              score: game.awayTeam.score,
+          }
       },
-      away: {
-        teamId: ObjectId("64eaf20e8f1b2f001c9f1235"),
-        name: "Boston Celtics",
-        score: 108,
-      },
-    },
-    referees: [
-      {
-        refereeId: ObjectId("64eaf20e8f1b2f001c9f3456"),
-        name: "James Williams",
-        role: "HEAD",
-      },
-    ],
-    highlights: [
-      {
-        playerId: ObjectId("64eaf20e8f1b2f001c9f6789"),
-        name: "LeBron James",
-        points: 30,
-        assists: 8,
-      },
-      {
-        playerId: ObjectId("64eaf20e8f1b2f001c9f6790"),
-        name: "Jayson Tatum",
-        points: 28,
-        rebounds: 10,
-      },
-    ],
-    status: "COMPLETED",
-  },
-  {
-    gameId: ObjectId("64eaf20e8f1b2f001c9f5679"),
-    season: "2023-24",
-    date: new Date("2023-12-27T20:00:00Z"),
-    teams: {
-      home: {
-        teamId: ObjectId("64eaf20e8f1b2f001c9f1236"),
-        name: "Golden State Warriors",
-        score: 120,
-      },
-      away: {
-        teamId: ObjectId("64eaf20e8f1b2f001c9f1237"),
-        name: "Miami Heat",
-        score: 112,
-      },
-    },
-    referees: [
-      {
-        refereeId: ObjectId("64eaf20e8f1b2f001c9f3457"),
-        name: "Sarah Martinez",
-        role: "HEAD",
-      },
-    ],
-    highlights: [
-      {
-        playerId: ObjectId("64eaf20e8f1b2f001c9f6791"),
-        name: "Stephen Curry",
-        points: 40,
-        assists: 10,
-      },
-      {
-        playerId: ObjectId("64eaf20e8f1b2f001c9f6792"),
-        name: "Jimmy Butler",
-        points: 25,
-        rebounds: 8,
-      },
-    ],
-    status: "COMPLETED",
-  },
-];
+      referees: refereeDetails,
+      highlights: highlights,
+      status: game.status
+  };
+});
+
+// Insertar resultados en la colección
 db.results.insertMany(results);
+
+// Verificar inserción
+print("Resultados insertados:", db.results.countDocuments());
