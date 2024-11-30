@@ -1,3 +1,12 @@
+const teamIds = {
+    lakers: ObjectId(),
+    celtics: ObjectId(),
+    warriors: ObjectId(),
+    heat: ObjectId(),
+    nuggets: ObjectId()
+};
+
+
 // Insertamos los equipos
 const teams = [
   {

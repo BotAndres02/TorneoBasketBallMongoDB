@@ -54,7 +54,6 @@ const games = [
       ],
       status: "COMPLETED"
   }
-  // ... Puedo agregar más juegos si lo necesitas
 ];
 
 db.games.insertMany(games);
