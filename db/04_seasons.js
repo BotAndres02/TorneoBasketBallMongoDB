@@ -1,4 +1,9 @@
 // Insertamos las temporadas
+const seasonIds = {
+    season2223: ObjectId(),
+    season2324: ObjectId()
+};
+
 const seasons = [
   {
       _id: seasonIds.season2223,

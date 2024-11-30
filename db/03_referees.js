@@ -1,3 +1,11 @@
+
+const refereeIds = {
+    ref1: ObjectId(),
+    ref2: ObjectId(),
+    ref3: ObjectId(),
+}; 
+
+
 // Insertamos los árbitros
 const referees = [
   {
