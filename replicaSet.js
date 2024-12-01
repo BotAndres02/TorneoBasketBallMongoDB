@@ -32,6 +32,3 @@ rs.initiate({
       catchUpTimeoutMillis: 30000
     }
   })
-
-  /* Verificar estado de la replica Set */
-  rs.status()
