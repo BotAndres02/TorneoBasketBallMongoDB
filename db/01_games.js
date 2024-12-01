@@ -1,4 +1,23 @@
 // Insertamos los juegos
+const refereeIds = {
+    ref1: ObjectId(),
+    ref2: ObjectId(),
+    ref3: ObjectId(),
+}; 
+
+const seasonIds = {
+    season2223: ObjectId(),
+    season2324: ObjectId()
+};
+
+const teamIds = {
+    lakers: ObjectId(),
+    celtics: ObjectId(),
+    warriors: ObjectId(),
+    heat: ObjectId(),
+    nuggets: ObjectId()
+};
+
 const games = [
   {
       _id: ObjectId(),
