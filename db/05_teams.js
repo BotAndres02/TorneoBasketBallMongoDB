@@ -70,3 +70,6 @@ const teams = [
       }
   }
 ];
+
+
+db.teams.insertMany(teams);
