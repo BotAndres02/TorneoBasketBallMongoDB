@@ -1,3 +1,6 @@
+
+// Crear entorno de shdars
+
 mongod --shardsvr --port 27020 --dbpath C:\shard_data\data\shard0 --replSet rs0 --bind_ip localhost;
 mongod --shardsvr --port 27021 --dbpath C:\shard_data\data\shard1 --replSet rs1 --bind_ip localhost;
 mongod --shardsvr --port 27022 --dbpath C:\shard_data\data\shard2 --replSet rs2 --bind_ip localhost;
@@ -89,23 +92,4 @@ for (let i = 0; i < 1000; i++) {
 }
 
 sh.status();
-
-
-
-
-// db.referees.getShardDistribution();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
